@@ -2,6 +2,7 @@ import Groq from 'groq-sdk';
 import { NextRequest, NextResponse } from 'next/server';
 import { nanoid } from 'nanoid';
 import { Plan } from '@/types/plan';
+import type { Step } from '@/types/plan';
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -52,6 +53,6 @@ Requirements:
 
   const raw = JSON.parse(chatCompletion.choices[0]?.message?.content || '{}');
   // Asegura que cada paso tenga un id
-  raw.steps?.forEach((s: any) => (s.id = s.id || nanoid()));
+  (raw.steps as Step[])?.forEach((s) => (s.id = s.id || nanoid()));
   return NextResponse.json(raw as Plan);
 } 
