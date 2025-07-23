@@ -9,5 +9,11 @@ export interface Step {
   description: string;
   estimatedHours: number;
   deadline: string;
-  resources: { type: 'link'; title: string; url: string }[];
-} 
+  resources: Resource[];
+}
+
+export interface Resource {
+  type: 'link';
+  title: string;
+  url: string;
+}
