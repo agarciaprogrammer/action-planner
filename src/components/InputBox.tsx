@@ -32,24 +32,25 @@ export default function InputBox() {
 
   return (
     <div className="w-full max-w-xl mx-auto mt-8">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 items-center bg-card/80 p-6 rounded-xl shadow-vintage border border-border">
         <input
           type="text"
-          className="border rounded px-4 py-2 text-lg dark:bg-black dark:text-white"
-          placeholder="¿Cuál es tu meta? (ej: Aprender TypeScript en 1 semana)"
+          className="border-2 border-accent2 bg-background/80 text-foreground rounded-lg px-4 py-3 text-xl font-mono focus:outline-none focus:border-accent3 transition w-full placeholder:text-accent3/60 shadow-sm"
+          placeholder="Ej: Aprender a programar en 7 días, Lanzar mi primer podcast, etc."
           value={prompt}
           onChange={e => setPrompt(e.target.value)}
           required
+          disabled={loading}
         />
         <button
           type="submit"
-          className="bg-blue-600 text-white rounded px-4 py-2 font-semibold hover:bg-blue-700 transition"
+          className="w-full sm:w-auto bg-accent2 text-background rounded-lg px-8 py-3 font-extrabold text-lg tracking-widest shadow hover:bg-accent3 hover:text-accent2 transition border-2 border-accent2 hover:border-accent3 focus:outline-none focus:ring-2 focus:ring-accent3 focus:ring-offset-2"
           disabled={loading}
         >
-          {loading ? "Generando..." : "Generar"}
+          {loading ? "Generando..." : "GENERAR"}
         </button>
       </form>
-      {error && <p className="text-red-500 mt-4">{error}</p>}
+      {error && <p className="text-accent mt-4 text-center font-mono animate-pulse">{error}</p>}
       {plan && <PlanViewer plan={plan} />}
     </div>
   );

@@ -50,15 +50,13 @@ function StepItem({
     <li
       ref={setNodeRef}
       style={style}
-      className={`p-4 rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-black flex flex-col gap-2 relative transition-shadow ${
-        isDragging ? "shadow-2xl z-10" : ""
-      }`}
+      className={`p-5 rounded-xl border-2 border-accent2 bg-card shadow-vintage flex flex-col gap-2 relative transition-shadow duration-200 ${isDragging ? "shadow-2xl z-10 border-accent3" : ""}`}
       {...attributes}
       {...listeners}
     >
       <div className="flex flex-col sm:flex-row gap-2 sm:items-center justify-between">
         <input
-          className="font-semibold text-lg mb-1 bg-transparent border-b border-dashed border-gray-300 focus:border-blue-400 outline-none flex-1 min-w-0"
+          className="font-bold text-lg mb-1 bg-transparent border-b-2 border-dashed border-accent2 focus:border-accent3 outline-none flex-1 min-w-0 text-accent2"
           value={step.title}
           onChange={(e) => onChange("title", e.target.value)}
         />
@@ -69,7 +67,7 @@ function StepItem({
               type="number"
               min={1}
               max={40}
-              className="w-12 ml-1 bg-transparent border-b border-dashed border-gray-300 focus:border-blue-400 outline-none text-right"
+              className="w-12 ml-1 bg-transparent border-b-2 border-dashed border-accent2 focus:border-accent3 outline-none text-right text-accent3"
               value={step.estimatedHours}
               onChange={(e) => {
                 const val = Number(e.target.value);
@@ -84,26 +82,26 @@ function StepItem({
             📅
             <input
               type="date"
-              className="ml-1 bg-transparent border-b border-dashed border-gray-300 focus:border-blue-400 outline-none"
+              className="ml-1 bg-transparent border-b-2 border-dashed border-accent2 focus:border-accent3 outline-none text-accent3"
               value={step.deadline}
               onChange={(e) => onChange("deadline", e.target.value)}
             />
           </label>
         </div>
       </div>
-      <p className="mb-2 text-gray-700 dark:text-gray-300">{step.description}</p>
+      <p className="mb-2 text-foreground/80 font-mono">{step.description}</p>
       {step.resources.length > 0 && (
-        <ul className="list-disc list-inside text-blue-600 dark:text-blue-400">
+        <ul className="list-disc list-inside text-accent3 font-mono">
           {step.resources.map((r, i) => (
             <li key={i}>
-              <a href={r.url} target="_blank" rel="noopener noreferrer">
+              <a href={r.url} target="_blank" rel="noopener noreferrer" className="underline hover:text-accent2 transition">
                 {r.title}
               </a>
             </li>
           ))}
         </ul>
       )}
-      <span className="absolute left-0 top-1/2 -translate-y-1/2 cursor-grab text-xl select-none opacity-60 pl-2">
+      <span className="absolute left-0 top-1/2 -translate-y-1/2 cursor-grab text-2xl select-none opacity-80 pl-2 transition-transform duration-200 hover:scale-125 text-accent2">
         ☰
       </span>
     </li>
@@ -178,18 +176,18 @@ export default function PlanViewer({ plan }: Props) {
   return (
     <section
       id="plan-canvas"
-      className="w-full max-w-2xl mx-auto mt-8 p-6 rounded-lg bg-gray-50 dark:bg-gray-900 shadow"
+      className="w-full max-w-2xl mx-auto mt-8 p-8 rounded-2xl bg-card shadow-vintage border-2 border-accent2"
     >
-      <div className="flex justify-between items-center mb-4 gap-2">
+      <div className="flex justify-between items-center mb-6 gap-2">
         <input
-          className="text-2xl font-bold w-full bg-transparent border-b border-dashed border-gray-300 focus:border-blue-400 outline-none"
+          className="text-3xl font-extrabold w-full bg-transparent border-b-2 border-dashed border-accent2 focus:border-accent3 outline-none text-accent2 tracking-widest mb-2"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         {steps.length > 0 && (
           <button
             onClick={handleExportPDF}
-            className="ml-2 px-4 py-2 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition disabled:opacity-60"
+            className="ml-2 px-6 py-3 rounded-xl bg-accent3 text-background font-extrabold text-lg shadow hover:bg-accent2 hover:text-accent3 transition border-2 border-accent3 hover:border-accent2 focus:outline-none focus:ring-2 focus:ring-accent2 focus:ring-offset-2 disabled:opacity-60"
             disabled={exporting}
           >
             {exporting ? "Exportando..." : "Exportar PDF"}
@@ -198,7 +196,7 @@ export default function PlanViewer({ plan }: Props) {
       </div>
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={steps.map((s) => s.id)} strategy={verticalListSortingStrategy}>
-          <ol className="space-y-4">
+          <ol className="space-y-6">
             {steps.map((step, idx) => (
               <StepItem
                 key={step.id}
