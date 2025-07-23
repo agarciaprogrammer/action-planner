@@ -1,26 +1,60 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f7f7f7;
+  --foreground: #18181b;
+  --accent: #ff5c5c;
+  --accent2: #ffd700;
+  --accent3: #00e0e0;
+  --card-bg: #fff;
+  --border: #e5e5e5;
+  --shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: #18181b;
+  --foreground: #ededed;
+  --accent: #ff5c5c;
+  --accent2: #ffd700;
+  --accent3: #00e0e0;
+  --card-bg: #23232a;
+  --border: #333347;
+  --shadow: 0 4px 24px 0 rgba(0,0,0,0.15);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans, 'Montserrat', 'Arial', sans-serif);
+  letter-spacing: 0.01em;
+  min-height: 100vh;
+  background-image: repeating-linear-gradient(135deg, rgba(255,255,255,0.01) 0 2px, transparent 2px 40px);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-geist-sans, 'Montserrat', 'Arial', sans-serif);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+input, button, textarea {
+  font-family: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: var(--card-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #18181b;
+    --foreground: #ededed;
+    --card-bg: #23232a;
+    --border: #333347;
+  }
 }
