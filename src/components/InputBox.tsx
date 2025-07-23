@@ -23,7 +23,7 @@ export default function InputBox() {
       if (!res.ok) throw new Error("Error generando el plan");
       const data = await res.json();
       setPlan(data);
-    } catch (err) {
+    } catch {
       setError("No se pudo generar el plan. Intenta de nuevo.");
     } finally {
       setLoading(false);
