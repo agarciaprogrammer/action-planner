@@ -23,7 +23,6 @@ Requirements:
   "title": "<goal>",
   "steps": [
     {
-      "id": "<uuid>",
       "title": "...",
       "description": "...",
       "estimatedHours": <int>,
@@ -32,27 +31,65 @@ Requirements:
     }
   ]
 }
+- Do NOT include trailing commas or any explanation.
+- Do NOT include an "id" field (the system will assign it).
 - Total estimatedHours <= 40.
 - Each step must be doable in 1-3 days.
 - Start today (${today}).
 - Provide 0-2 high-quality links per step.
-- Double check your output is valid JSON and matches the schema.
-- Do NOT include trailing commas or any explanation.
 `;
 
-  const chatCompletion = await groq.chat.completions.create({
-    messages: [
-      { role: 'system', content: systemPrompt },
-      { role: 'user', content: prompt },
-    ],
-    model: 'deepseek-r1-distill-llama-70b',
-    temperature: 0.2,
-    max_tokens: 1200,
-    response_format: { type: 'json_object' },
-  });
+  let chatCompletion;
+  try {
+    chatCompletion = await groq.chat.completions.create({
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: prompt },
+      ],
+      model: 'deepseek-r1-distill-llama-70b',
+      temperature: 0.2,
+      max_tokens: 1200,
+      response_format: { type: 'json_object' },
+    });
+  } catch (error) {
+    console.error('Error al obtener respuesta de Groq:', error);
+    return NextResponse.json({ error: 'Error al generar el plan. Intenta más tarde.' }, { status: 500 });
+  }
 
-  const raw = JSON.parse(chatCompletion.choices[0]?.message?.content || '{}');
-  // Asegura que cada paso tenga un id
-  (raw.steps as Step[])?.forEach((s) => (s.id = s.id || nanoid()));
+  let content = chatCompletion.choices[0]?.message?.content || '{}';
+  let raw;
+
+  try {
+    raw = JSON.parse(content);
+  } catch {
+    // 🔧 Primer intento: remover comas antes de ] o }
+    content = content.replace(/,\s*([}\]])/g, '$1').trim();
+
+    // 🔧 Segundo intento: recortar hasta el último cierre de objeto válido
+    const lastValidIndex = content.lastIndexOf(']}');
+    if (lastValidIndex !== -1) {
+      const fixed = content.slice(0, lastValidIndex + 2);
+      try {
+        raw = JSON.parse(fixed);
+      } catch {
+        console.error('Error al parsear JSON (recortado):', fixed);
+        return NextResponse.json({ error: 'No se pudo parsear el plan generado. Intenta de nuevo.' }, { status: 500 });
+      }
+    } else {
+      console.error('JSON malformado sin cierre válido:', content);
+      return NextResponse.json({ error: 'No se pudo parsear el plan generado. Intenta de nuevo.' }, { status: 500 });
+    }
+  }
+
+  // 🧠 Agrega ID a cada paso
+  try {
+    (raw.steps as Step[])?.forEach((s) => {
+      s.id = nanoid();
+    });
+  } catch (err) {
+    console.error('Error al generar IDs para los pasos:', err);
+    return NextResponse.json({ error: 'El formato del plan es inválido.' }, { status: 500 });
+  }
+
   return NextResponse.json(raw as Plan);
-} 
+}
