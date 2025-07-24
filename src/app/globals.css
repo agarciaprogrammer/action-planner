@@ -1,40 +1,62 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f7f7;
-  --foreground: #18181b;
-  --accent: #ff5c5c;
-  --accent2: #ffd700;
-  --accent3: #00e0e0;
-  --card-bg: #fff;
-  --border: #e5e5e5;
-  --shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
+  --background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 50%, #80deea 100%);
+  --foreground: #1a237e;
+  --accent: #00bcd4;
+  --accent2: #00e676;
+  --accent3: #fff;
+  --card-bg: rgba(255,255,255,0.55);
+  --glass-blur: blur(16px);
+  --border: #b2ebf2;
+  --shadow: 0 8px 32px 0 rgba(0,188,212,0.18);
+  --bubble: radial-gradient(circle at 30% 70%, #b2ebf2 0%, #e0f7fa 80%, transparent 100%);
 }
 
 .dark {
-  --background: #18181b;
-  --foreground: #ededed;
-  --accent: #ff5c5c;
-  --accent2: #ffd700;
-  --accent3: #00e0e0;
-  --card-bg: #23232a;
-  --border: #333347;
-  --shadow: 0 4px 24px 0 rgba(0,0,0,0.15);
+  --background: linear-gradient(135deg, #232b3b 0%, #1a237e 100%);
+  --foreground: #e3f2fd;
+  --accent: #00bcd4;
+  --accent2: #00e676;
+  --accent3: #fff;
+  --card-bg: rgba(26,35,126,0.55);
+  --glass-blur: blur(18px);
+  --border: #3949ab;
+  --shadow: 0 8px 32px 0 rgba(0,188,212,0.22);
+  --bubble: radial-gradient(circle at 70% 30%, #3949ab 0%, #232b3b 80%, transparent 100%);
 }
 
 body {
+  min-height: 100vh;
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans, 'Montserrat', 'Arial', sans-serif);
+  font-family: var(--font-geist-sans, 'Inter', 'Montserrat', 'Arial', sans-serif);
   letter-spacing: 0.01em;
-  min-height: 100vh;
-  background-image: repeating-linear-gradient(135deg, rgba(255,255,255,0.01) 0 2px, transparent 2px 40px);
+  position: relative;
+  overflow-x: hidden;
+  transition: background 0.8s cubic-bezier(.4,0,.2,1);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--bubble);
+  opacity: 0.25;
+  animation: bubble-move 12s infinite linear alternate;
+}
+
+@keyframes bubble-move {
+  0% { background-position: 30% 70%; }
+  100% { background-position: 70% 30%; }
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-geist-sans, 'Montserrat', 'Arial', sans-serif);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-family: var(--font-geist-sans, 'Inter', 'Montserrat', 'Arial', sans-serif);
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 12px rgba(0,188,212,0.12);
 }
 
 input, button, textarea {
@@ -48,13 +70,4 @@ input, button, textarea {
 ::-webkit-scrollbar-thumb {
   background: var(--border);
   border-radius: 4px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #18181b;
-    --foreground: #ededed;
-    --card-bg: #23232a;
-    --border: #333347;
-  }
 }
