@@ -10,6 +10,7 @@ export function getSystemPrompt(today: string): string {
     "title": "<goal>",
     "steps": [
       {
+        "id": "<string>",
         "title": "...",
         "description": "...",
         "estimatedHours": <int>,
@@ -19,11 +20,11 @@ export function getSystemPrompt(today: string): string {
     ]
   }
   - Do NOT include trailing commas or any explanation.
-  - Do NOT include an "id" field (the system will assign it).
+  - Each step must include an "id" field (can be a unique string or a placeholder).
   - Total estimatedHours <= 40.
   - Each step must be doable in 1–3 days.
   - Start today (${today}).
   - Provide 0–2 high-quality links per step.
   - ⚠️ Ensure the response ends with: "]}"
   `;
-  }
+}
