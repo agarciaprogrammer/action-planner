@@ -1,8 +1,6 @@
 # Activa.AI
 > Turn any goal into a step-by-step, shareable action plan in seconds.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-org/ai-action-planner)
-
 ---
 
 ## 🚀 One-Sentence Pitch
