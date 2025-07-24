@@ -89,7 +89,13 @@ function StepItem({
           </label>
         </div>
       </div>
-      <p className="mb-2 text-foreground/80 font-mono">{step.description}</p>
+      <textarea
+        className="mb-2 text-foreground/80 font-mono bg-background/70 border border-accent2 rounded-lg p-2 resize-vertical min-h-[60px] focus:outline-none focus:border-accent3 transition"
+        value={step.description}
+        onChange={e => onChange("description", e.target.value)}
+        rows={3}
+        placeholder="Describe este paso en detalle..."
+      />
       {step.resources.length > 0 && (
         <ul className="list-disc list-inside text-accent3 font-mono">
           {step.resources.map((r, i) => (
@@ -101,7 +107,7 @@ function StepItem({
           ))}
         </ul>
       )}
-      <span className="absolute left-0 top-1/2 -translate-y-1/2 cursor-grab text-2xl select-none opacity-80 pl-2 transition-transform duration-200 hover:scale-125 text-accent2">
+      <span className="absolute -left-7 top-1/2 -translate-y-1/2 cursor-grab text-2xl select-none opacity-80 transition-transform duration-200 hover:scale-125 text-accent2">
         ☰
       </span>
     </li>
@@ -176,23 +182,17 @@ export default function PlanViewer({ plan }: Props) {
   return (
     <section
       id="plan-canvas"
-      className="w-full max-w-2xl mx-auto mt-8 p-8 rounded-2xl bg-card shadow-vintage border-2 border-accent2"
+      className="w-full max-w-4xl mx-auto mt-8 p-8 rounded-2xl bg-card shadow-vintage border-2 border-accent2"
     >
-      <div className="flex justify-between items-center mb-6 gap-2">
-        <input
-          className="text-3xl font-extrabold w-full bg-transparent border-b-2 border-dashed border-accent2 focus:border-accent3 outline-none text-accent2 tracking-widest mb-2"
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-2">
+        <textarea
+          className="text-3xl font-extrabold w-full bg-transparent border-b-2 border-dashed border-accent2 focus:border-accent3 outline-none text-accent2 tracking-widest mb-2 resize-none min-h-[2.5em] max-h-[6em] leading-tight"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          rows={1}
+          title={title}
         />
-        {steps.length > 0 && (
-          <button
-            onClick={handleExportPDF}
-            className="ml-2 px-6 py-3 rounded-xl bg-accent3 text-background font-extrabold text-lg shadow hover:bg-accent2 hover:text-accent3 transition border-2 border-accent3 hover:border-accent2 focus:outline-none focus:ring-2 focus:ring-accent2 focus:ring-offset-2 disabled:opacity-60"
-            disabled={exporting}
-          >
-            {exporting ? "Exportando..." : "Exportar PDF"}
-          </button>
-        )}
+        
       </div>
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={steps.map((s) => s.id)} strategy={verticalListSortingStrategy}>
@@ -208,6 +208,16 @@ export default function PlanViewer({ plan }: Props) {
           </ol>
         </SortableContext>
       </DndContext>
+
+      {steps.length > 0 && (
+          <button
+            onClick={handleExportPDF}
+            className="mt-6 w-full sm:w-auto px-6 py-3 rounded-xl bg-accent3 text-background font-extrabold text-lg shadow hover:bg-accent2 hover:text-accent3 transition border-2 border-accent3 hover:border-accent2 focus:outline-none focus:ring-2 focus:ring-accent2 focus:ring-offset-2 disabled:opacity-60 cursor-pointer"
+            disabled={exporting}
+          >
+            {exporting ? "Exportando..." : "Exportar PDF"}
+          </button>
+        )}
     </section>
   );
 }
