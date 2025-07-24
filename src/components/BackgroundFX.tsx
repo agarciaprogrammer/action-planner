@@ -6,7 +6,7 @@ export default function BackgroundFX() {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [showShooting, setShowShooting] = useState(false);
+  // const [showShooting, setShowShooting] = useState(false); // Eliminar, no se usa
 
   useEffect(() => {
     setMounted(true);
@@ -30,7 +30,7 @@ export default function BackgroundFX() {
       r: Math.random() * 1.2 + 0.3,
       o: Math.random() * 0.5 + 0.5,
     }));
-    let shooting = { x: -100, y: -100, vx: 0, vy: 0, active: false };
+    const shooting = { x: -100, y: -100, vx: 0, vy: 0, active: false };
     let shootingTimeout: NodeJS.Timeout;
 
     function draw() {
@@ -68,10 +68,10 @@ export default function BackgroundFX() {
       shooting.vx = -8 - Math.random() * 4;
       shooting.vy = 2 + Math.random() * 2;
       shooting.active = true;
-      setShowShooting(true);
+      // setShowShooting(true); // Eliminar
       setTimeout(() => {
         shooting.active = false;
-        setShowShooting(false);
+        // setShowShooting(false); // Eliminar
       }, 700);
       shootingTimeout = setTimeout(startShootingStar, 4000 + Math.random() * 4000);
     }
