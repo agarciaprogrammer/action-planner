@@ -45,7 +45,7 @@ https://ai-action-planner.vercel.app
 ## 📁 Quick Start (local)
 
 ```bash
-git clone https://github.com/your-org/ai-action-planner.git
+git clone https://github.com/agarciaprogrammer/action-planner.git
 cd ai-action-planner
 cp .env.example .env.local
 # add GROQ_API_KEY, optionally CLERK & SUPABASE keys
